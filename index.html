@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>PixelFit — 이미지 크기 변경</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app">
+    <header class="app-header">
+      <div class="logo">
+        <span class="logo-mark">▦</span>
+        <span class="logo-text">PixelFit</span>
+      </div>
+      <p class="tagline">사진을 업로드하고 원하는 크기로 변경하세요</p>
+    </header>
+
+    <main class="app-main">
+      <section id="dropZone" class="drop-zone">
+        <input type="file" id="fileInput" accept="image/*" hidden />
+        <div class="drop-zone-content">
+          <span class="drop-icon">⬆</span>
+          <p class="drop-title">이미지를 드래그하거나 클릭해서 업로드</p>
+          <p class="drop-sub">PNG, JPG, WEBP 지원</p>
+        </div>
+      </section>
+
+      <section id="editor" class="editor" hidden>
+        <div class="preview-panel">
+          <div class="preview-frame">
+            <img id="previewImg" alt="업로드한 이미지 미리보기" />
+          </div>
+          <div class="meta">
+            <span id="originalMeta">원본: -</span>
+            <span id="outputMeta">결과: -</span>
+          </div>
+        </div>
+
+        <div class="controls-panel">
+          <div class="field-row">
+            <label for="widthInput">가로 (px)</label>
+            <input type="number" id="widthInput" min="1" placeholder="가로" />
+          </div>
+          <div class="field-row">
+            <label for="heightInput">세로 (px)</label>
+            <input type="number" id="heightInput" min="1" placeholder="세로" />
+          </div>
+
+          <label class="checkbox-row">
+            <input type="checkbox" id="lockRatio" checked />
+            <span>비율 고정</span>
+          </label>
+
+          <div class="field-row">
+            <label for="formatSelect">파일 형식</label>
+            <select id="formatSelect">
+              <option value="image/png">PNG</option>
+              <option value="image/jpeg">JPG</option>
+              <option value="image/webp">WEBP</option>
+            </select>
+          </div>
+
+          <div class="field-row" id="qualityRow">
+            <label for="qualityInput">품질 (<span id="qualityValue">90</span>%)</label>
+            <input type="range" id="qualityInput" min="10" max="100" value="90" />
+          </div>
+
+          <div class="quick-sizes">
+            <span class="quick-label">빠른 선택</span>
+            <div class="quick-buttons">
+              <button type="button" data-w="1080" data-h="1080">1080×1080</button>
+              <button type="button" data-w="1200" data-h="630">1200×630</button>
+              <button type="button" data-w="800" data-h="800">800×800</button>
+              <button type="button" data-w="512" data-h="512">512×512</button>
+            </div>
+          </div>
+
+          <div class="actions">
+            <button type="button" id="resetBtn" class="btn btn-ghost">다른 이미지</button>
+            <button type="button" id="downloadBtn" class="btn btn-primary">다운로드</button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <canvas id="workCanvas" hidden></canvas>
+  </div>
+
+<script src="script.js"></script>
+</body>
+</html>
