@@ -105,6 +105,10 @@ body {
   gap: 24px;
 }
 
+.editor[hidden] {
+  display: none;
+}
+
 @media (max-width: 720px) {
   .editor {
     grid-template-columns: 1fr;
