@@ -28,6 +28,10 @@
   box-sizing: border-box;
 }
 
+[hidden] {
+  display: none !important;
+}
+
 body {
   margin: 0;
   background: var(--bg);
@@ -103,10 +107,6 @@ body {
   display: grid;
   grid-template-columns: 1.2fr 1fr;
   gap: 24px;
-}
-
-.editor[hidden] {
-  display: none;
 }
 
 @media (max-width: 720px) {
@@ -205,6 +205,21 @@ body {
   accent-color: var(--accent);
   width: 16px;
   height: 16px;
+}
+
+.checkbox-row:has(input:disabled) {
+  cursor: not-allowed;
+  color: var(--text-muted);
+}
+
+.field-row input[type="color"] {
+  padding: 2px;
+  height: 38px;
+  width: 64px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg);
+  cursor: pointer;
 }
 
 .quick-sizes {

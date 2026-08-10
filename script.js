@@ -8,6 +8,9 @@
   const widthInput = document.getElementById("widthInput");
   const heightInput = document.getElementById("heightInput");
   const lockRatio = document.getElementById("lockRatio");
+  const fillPadding = document.getElementById("fillPadding");
+  const fillColorRow = document.getElementById("fillColorRow");
+  const fillColorInput = document.getElementById("fillColorInput");
   const formatSelect = document.getElementById("formatSelect");
   const qualityRow = document.getElementById("qualityRow");
   const qualityInput = document.getElementById("qualityInput");
@@ -99,6 +102,15 @@
     updateOutputMeta();
   });
 
+  function syncFillPaddingAvailability() {
+    fillPadding.disabled = lockRatio.checked;
+    if (lockRatio.checked) fillPadding.checked = false;
+    fillColorRow.hidden = !fillPadding.checked;
+  }
+  lockRatio.addEventListener("change", syncFillPaddingAvailability);
+  fillPadding.addEventListener("change", syncFillPaddingAvailability);
+  syncFillPaddingAvailability();
+
   quickButtons.forEach((btn) => {
     btn.addEventListener("click", () => {
       widthInput.value = btn.dataset.w;
@@ -132,7 +144,20 @@
     ctx.clearRect(0, 0, w, h);
     ctx.imageSmoothingEnabled = true;
     ctx.imageSmoothingQuality = "high";
-    ctx.drawImage(originalImage, 0, 0, w, h);
+
+    if (fillPadding.checked && !lockRatio.checked) {
+      ctx.fillStyle = fillColorInput.value;
+      ctx.fillRect(0, 0, w, h);
+
+      const scale = Math.min(w / originalImage.naturalWidth, h / originalImage.naturalHeight);
+      const dw = originalImage.naturalWidth * scale;
+      const dh = originalImage.naturalHeight * scale;
+      const dx = (w - dw) / 2;
+      const dy = (h - dh) / 2;
+      ctx.drawImage(originalImage, dx, dy, dw, dh);
+    } else {
+      ctx.drawImage(originalImage, 0, 0, w, h);
+    }
 
     const mime = formatSelect.value;
     const quality = mime === "image/png" ? undefined : qualityInput.value / 100;
