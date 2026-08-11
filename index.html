@@ -60,10 +60,23 @@
             <span>비율 고정</span>
           </label>
 
-          <label class="checkbox-row">
-            <input type="checkbox" id="fillPadding" />
-            <span>여백 채우기 (비율 고정 해제 시)</span>
-          </label>
+          <div class="field-row">
+            <label>크기 맞춤 방식 (비율 고정 해제 시)</label>
+            <div class="segmented" role="radiogroup" aria-label="크기 맞춤 방식">
+              <label class="segmented-option">
+                <input type="radio" name="fitMode" value="stretch" checked />
+                <span>늘리기</span>
+              </label>
+              <label class="segmented-option">
+                <input type="radio" name="fitMode" value="crop" />
+                <span>자르기</span>
+              </label>
+              <label class="segmented-option">
+                <input type="radio" name="fitMode" value="pad" />
+                <span>여백 채우기</span>
+              </label>
+            </div>
+          </div>
 
           <div class="field-row" id="fillColorRow" hidden>
             <label for="fillColorInput">여백 색상</label>

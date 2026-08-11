@@ -8,7 +8,7 @@
   const widthInput = document.getElementById("widthInput");
   const heightInput = document.getElementById("heightInput");
   const lockRatio = document.getElementById("lockRatio");
-  const fillPadding = document.getElementById("fillPadding");
+  const fitModeRadios = document.querySelectorAll('input[name="fitMode"]');
   const fillColorRow = document.getElementById("fillColorRow");
   const fillColorInput = document.getElementById("fillColorInput");
   const formatSelect = document.getElementById("formatSelect");
@@ -102,14 +102,17 @@
     updateOutputMeta();
   });
 
-  function syncFillPaddingAvailability() {
-    fillPadding.disabled = lockRatio.checked;
-    if (lockRatio.checked) fillPadding.checked = false;
-    fillColorRow.hidden = !fillPadding.checked;
+  function getFitMode() {
+    return Array.from(fitModeRadios).find((r) => r.checked)?.value || "stretch";
   }
-  lockRatio.addEventListener("change", syncFillPaddingAvailability);
-  fillPadding.addEventListener("change", syncFillPaddingAvailability);
-  syncFillPaddingAvailability();
+
+  function syncFitModeAvailability() {
+    fitModeRadios.forEach((r) => (r.disabled = lockRatio.checked));
+    fillColorRow.hidden = lockRatio.checked || getFitMode() !== "pad";
+  }
+  lockRatio.addEventListener("change", syncFitModeAvailability);
+  fitModeRadios.forEach((r) => r.addEventListener("change", syncFitModeAvailability));
+  syncFitModeAvailability();
 
   quickButtons.forEach((btn) => {
     btn.addEventListener("click", () => {
@@ -145,7 +148,16 @@
     ctx.imageSmoothingEnabled = true;
     ctx.imageSmoothingQuality = "high";
 
-    if (fillPadding.checked && !lockRatio.checked) {
+    const mode = lockRatio.checked ? "stretch" : getFitMode();
+
+    if (mode === "crop") {
+      const scale = Math.max(w / originalImage.naturalWidth, h / originalImage.naturalHeight);
+      const dw = originalImage.naturalWidth * scale;
+      const dh = originalImage.naturalHeight * scale;
+      const dx = (w - dw) / 2;
+      const dy = (h - dh) / 2;
+      ctx.drawImage(originalImage, dx, dy, dw, dh);
+    } else if (mode === "pad") {
       ctx.fillStyle = fillColorInput.value;
       ctx.fillRect(0, 0, w, h);
 

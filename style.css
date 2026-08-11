@@ -212,6 +212,40 @@ body {
   color: var(--text-muted);
 }
 
+.segmented {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.segmented-option {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 10px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.segmented-option input {
+  accent-color: var(--accent);
+  width: 14px;
+  height: 14px;
+}
+
+.segmented-option:has(input:checked) {
+  border-color: var(--accent);
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.segmented-option:has(input:disabled) {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
 .field-row input[type="color"] {
   padding: 2px;
   height: 38px;
